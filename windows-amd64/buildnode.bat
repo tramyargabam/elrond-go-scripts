@@ -2,7 +2,7 @@
 @echo off
 cd %userprofile%
 
-SET BINTAG=v1.0.34
+SET BINTAG=v1.0.35
 SET CONFTAG= BoN-ph1-w3
 
 :: Create Paths
