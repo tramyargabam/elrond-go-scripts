@@ -65,7 +65,7 @@ if [ "$NODE_NAME" = "" ]
 then
     NODE_NAME="community-validator-$CURRENT"
 fi
-sed -i 's/NodeDisplayName = ""/NodeDisplayName = "'$NODE_NAME'"/' $HOME/go/src/github.com/ElrondNetwork/elrond-go-node/config/config.toml
+sed -i 's/NodeDisplayName = ""/NodeDisplayName = "'$NODE_NAME'"/' $HOME/go/src/github.com/ElrondNetwork/elrond-go-node/config/prefs.toml
 
 #Build Key Generator and create unique node keys
 echo -e

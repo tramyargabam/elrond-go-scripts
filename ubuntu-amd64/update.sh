@@ -42,14 +42,6 @@ echo -e
 cd $GOPATH/src/github.com/ElrondNetwork/elrond-go-node/config
 CURRENT=$(sed -e 's#.*-\(\)#\1#' <<< "$CONFIGVER")
 
-read -p "Choose a custom name (default community-validator-$CURRENT): " NODE_NAME
-if [ "$NODE_NAME" = "" ]
-then
-    NODE_NAME="community-validator-$CURRENT"
-fi
-sed -i 's/NodeDisplayName = ""/NodeDisplayName = "'$NODE_NAME'"/' $HOME/go/src/github.com/ElrondNetwork/elrond-go-node/config/config.toml
-
-
 #Node DB & Logs Cleanup
 cd $GOPATH/src/github.com/ElrondNetwork/elrond-go-node
 
