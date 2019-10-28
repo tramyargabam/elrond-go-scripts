@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BINARYVER='sf2019'
+BINARYVER='sf2019-1'
 CONFIGVER='sf2019'
 
 #Color to the people
@@ -15,29 +15,30 @@ echo -e
 
 #Prerequisites & go installer
 echo -e
-echo -e "${GREEN}--> Running machine update & installing latest GOLang...${NC}"
+echo -e "${GREEN}--> Running machine update...${NC}"
 echo -e
 bash _prerequisite.sh
-bash _golang.sh
 
-#Handle some paths
-export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/go
 cd $GOPATH
 
 #If repos are present and you run install again this will clean up for you :D
 if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then echo -e "${RED}--> Repos present. Please run update.sh script...${NC}"; echo -e; exit; fi
 
-mkdir -p $GOPATH/src/github.com/ElrondNetwork
-cd $GOPATH/src/github.com/ElrondNetwork
+mkdir -p $GOPATH/src/github.com/ElrondNetwork/elrond-go
+cd $GOPATH/src/github.com/ElrondNetwork/elrond-go
 
 echo -e
-echo -e "${GREEN}--> Cloning the ${CYAN}elrond-go${GREEN} & ${CYAN}elrond-config${GREEN} repos...${NC}"
+echo -e "${GREEN}--> Get ${CYAN}elrond-go${GREEN} assets & clone ${CYAN}elrond-config${GREEN} repo...${NC}"
 echo -e
 
-#Clone the elrong-go & elrong-config repos
-git clone https://github.com/ElrondNetwork/elrond-go
-cd elrond-go && git checkout --force $BINARYVER
+#Get the elrong-go assets & clone elrong-config repo
+
+curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*linux\|browser_download_url.*so" | cut -d : -f 2,3 | tr -d \" | wget -qi -
+mv node.linux node
+mv keygenerator.linux keygenerator
+chmod 777 node
+chmod 777 keygenerator
 cd ..
 git clone https://github.com/ElrondNetwork/elrond-config
 cd elrond-config && git checkout --force $CONFIGVER
@@ -46,11 +47,10 @@ cd elrond-config && git checkout --force $CONFIGVER
 mkdir -p $GOPATH/src/github.com/ElrondNetwork/elrond-go-node/config
 cp *.* $GOPATH/src/github.com/ElrondNetwork/elrond-go-node/config
 
-#Building the node from the elrond-go repo
+#Copying the node & .so files from the elrond-go repo
 cd $GOPATH/src/github.com/ElrondNetwork/elrond-go
-GO111MODULE=on go mod vendor
-cd cmd/node && go build -i -v -ldflags="-X main.appVersion=$(git describe --tags --long --dirty)"
 cp node $GOPATH/src/github.com/ElrondNetwork/elrond-go-node
+sudo cp libwasmer_runtime_c_api.so /usr/lib
 
 #Choose a custom node name... or leave it at default
 echo -e
@@ -69,8 +69,7 @@ sed -i 's/NodeDisplayName = ""/NodeDisplayName = "'$NODE_NAME'"/' $HOME/go/src/g
 echo -e
 echo -e "${GREEN}--> Building the Key Generator & creating unique node pems...${NC}"
 echo -e
-cd $GOPATH/src/github.com/ElrondNetwork/elrond-go/cmd/keygenerator
-go build
+cd $GOPATH/src/github.com/ElrondNetwork/elrond-go
 ./keygenerator
 
 #copy identity pem files perserving existing ones

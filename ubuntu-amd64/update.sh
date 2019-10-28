@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BINARYVER='sf2019'
+BINARYVER='sf2019-1'
 CONFIGVER='sf2019'
 
 #Color to the people
@@ -15,15 +15,15 @@ export GOPATH=$HOME/go
 #Stop the currently running node binary
 if (screen -ls | grep testnet -c); then screen -X -S testnet quit; else tmux kill-session -t testnet; fi
 
-#Refetch and rebuild elrond-go
-cd $HOME/go/src/github.com/ElrondNetwork/elrond-go
-git fetch
-git checkout --force $BINARYVER
-git pull
-cd cmd/node
-GO111MODULE=on go mod vendor
-go build -i -v -ldflags="-X main.appVersion=$(git describe --tags --long --dirty)"
+#Refetch elrond-go assets
+cd $GOPATH/src/github.com/ElrondNetwork/elrond-go
+curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*linux\|browser_download_url.*so" | cut -d : -f 2,3 | tr -d \" | wget -qi -
+mv node.linux node
+mv keygenerator.linux keygenerator
+chmod 777 node
+chmod 777 keygenerator
 cp node $GOPATH/src/github.com/ElrondNetwork/elrond-go-node
+sudo cp libwasmer_runtime_c_api.so /usr/lib
 
 #Refetch and rebuild elrond-config
 cd $HOME/go/src/github.com/ElrondNetwork/elrond-config
