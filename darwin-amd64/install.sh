@@ -37,9 +37,11 @@ echo -e "${GREEN}--> Get ${CYAN}elrond-go${GREEN} assets & clone ${CYAN}elrond-c
 echo -e
 
 #Clone the elrong-go & elrong-config repos
-curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*mac\|browser_download_url.*dylib" | cut -d : -f 2,3 | tr -d \" | wget -qi -
-mv node.mac node
-mv keygenerator.mac keygenerator
+rm *
+ARCHIVENAME='darwin-amd64.tar.gz'
+curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*"$ARCHIVENAME | cut -d : -f 2,3 | tr -d \" | wget -qi -
+tar -xzf $ARCHIVENAME
+rm $ARCHIVENAME
 chmod 777 node
 chmod 777 keygenerator
 cd ..
@@ -97,10 +99,10 @@ read -p "How do you want to start your node (front|screen) : " START
 
 case $START in
    front)
-        cd $location/macos/start_scripts/ && ./start.sh
+        cd $location/darwin-amd64/start_scripts/ && ./start.sh
         ;;
     screen)
-        cd $location/macos/start_scripts/ && ./start_screen.sh
+        cd $location/darwin-amd64/start_scripts/ && ./start_screen.sh
         ;;
     *)
         echo "Ok ! Have it your way then..."

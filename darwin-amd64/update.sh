@@ -1,9 +1,7 @@
 #!/bin/bash
 
-#BINARYVER='tags/v1.0.36'
-#CONFIGVER='tags/BoN-ph1-w4'
-BINARYVER="tags/$(curl --silent "https://api.github.com/repos/ElrondNetwork/elrond-go/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')"
-CONFIGVER="tags/$(curl --silent "https://api.github.com/repos/ElrondNetwork/elrond-config/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')"
+BINARYVER='sf2019-1'
+CONFIGVER='sf2019'
 
 #Color to the people
 RED='\x1B[0;31m'
@@ -18,14 +16,16 @@ export GOPATH=$HOME/go
 if (screen -ls | grep validator -c); then screen -X -S validator quit; fi
 
 #Refetch and rebuild elrond-go
-cd $HOME/go/src/github.com/ElrondNetwork/elrond-go
-git fetch
-git checkout --force $BINARYVER
-git pull
-cd cmd/node
-GO111MODULE=on go mod vendor
-go build -i -v -ldflags="-X main.appVersion=$(git describe --tags --long --dirty)"
+cd $GOPATH/src/github.com/ElrondNetwork/elrond-go
+rm *
+ARCHIVENAME='darwin-amd64.tar.gz'
+curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*"$ARCHIVENAME | cut -d : -f 2,3 | tr -d \" | wget -qi -
+tar -xzf $ARCHIVENAME
+rm $ARCHIVENAME
+chmod 777 node
+chmod 777 keygenerator
 cp node $GOPATH/src/github.com/ElrondNetwork/elrond-go-node
+sudo cp libwasmer_runtime_c_api.dylib /usr/local/lib
 
 #Refetch and rebuild elrond-config
 cd $HOME/go/src/github.com/ElrondNetwork/elrond-config
@@ -33,14 +33,6 @@ git fetch
 git checkout --force $CONFIGVER
 git pull
 cp *.* $GOPATH/src/github.com/ElrondNetwork/elrond-go-node/config
-
-#Choose a custom node name... or leave it at default
-echo -e
-echo -e "${GREEN}--> Build ready. Time to choose a node name...${NC}"
-echo -e
-
-cd $GOPATH/src/github.com/ElrondNetwork/elrond-go-node/config
-CURRENT=$(sed -e 's#.*-\(\)#\1#' <<< "$CONFIGVER")
 
 #Node DB & Logs Cleanup
 cd $GOPATH/src/github.com/ElrondNetwork/elrond-go-node
@@ -69,10 +61,10 @@ read -p "How do you want to start your node (front|screen) : " START
 
 case $START in
    front)
-        cd $location/macos/start_scripts/ && ./start.sh
+        cd $location/darwin-amd64/start_scripts/ && ./start.sh
         ;;
     screen)
-        cd $location/macos/start_scripts/ && ./start_screen.sh
+        cd $location/darwin-amd64/start_scripts/ && ./start_screen.sh
         ;;
     *)
         echo "Ok ! Have it your way then..."

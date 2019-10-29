@@ -33,10 +33,11 @@ echo -e "${GREEN}--> Get ${CYAN}elrond-go${GREEN} assets & clone ${CYAN}elrond-c
 echo -e
 
 #Get the elrong-go assets & clone elrong-config repo
-
-curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*linux\|browser_download_url.*so" | cut -d : -f 2,3 | tr -d \" | wget -qi -
-mv node.linux node
-mv keygenerator.linux keygenerator
+rm *
+ARCHIVENAME='linux-amd64.tar.gz'
+curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*"$ARCHIVENAME | cut -d : -f 2,3 | tr -d \" | wget -qi -
+tar -xzf $ARCHIVENAME
+rm $ARCHIVENAME
 chmod 777 node
 chmod 777 keygenerator
 cd ..

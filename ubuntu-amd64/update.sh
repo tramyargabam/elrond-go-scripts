@@ -17,9 +17,11 @@ if (screen -ls | grep testnet -c); then screen -X -S testnet quit; else tmux kil
 
 #Refetch elrond-go assets
 cd $GOPATH/src/github.com/ElrondNetwork/elrond-go
-curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*linux\|browser_download_url.*so" | cut -d : -f 2,3 | tr -d \" | wget -qi -
-mv node.linux node
-mv keygenerator.linux keygenerator
+rm *
+ARCHIVENAME='linux-amd64.tar.gz'
+curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*"$ARCHIVENAME | cut -d : -f 2,3 | tr -d \" | wget -qi -
+tar -xzf $ARCHIVENAME
+rm $ARCHIVENAME
 chmod 777 node
 chmod 777 keygenerator
 cp node $GOPATH/src/github.com/ElrondNetwork/elrond-go-node
@@ -31,14 +33,6 @@ git fetch
 git checkout --force $CONFIGVER
 git pull
 cp *.* $GOPATH/src/github.com/ElrondNetwork/elrond-go-node/config
-
-#Choose a custom node name... or leave it at default
-echo -e
-echo -e "${GREEN}--> Build ready. Time to choose a node name...${NC}"
-echo -e
-
-cd $GOPATH/src/github.com/ElrondNetwork/elrond-go-node/config
-CURRENT=$(sed -e 's#.*-\(\)#\1#' <<< "$CONFIGVER")
 
 #Node DB & Logs Cleanup
 cd $GOPATH/src/github.com/ElrondNetwork/elrond-go-node
