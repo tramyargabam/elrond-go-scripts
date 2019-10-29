@@ -4,4 +4,4 @@ export GOPATH=$HOME/go
 
 tmux new-session -d -s "testnet"
 tmux send -t "testnet" "cd $GOPATH/src/github.com/ElrondNetwork/elrond-go-node" ENTER
-tmux send -t "testnet" "./node" ENTER
+tmux send -t "testnet" "./node -rest-api-port 9090" ENTER
