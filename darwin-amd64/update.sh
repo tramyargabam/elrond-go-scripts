@@ -17,7 +17,7 @@ if (screen -ls | grep validator -c); then screen -X -S validator quit; fi
 
 #Refetch and rebuild elrond-go
 cd $GOPATH/src/github.com/ElrondNetwork/elrond-go
-rm *
+rm -f *
 ARCHIVENAME='darwin-amd64.tar.gz'
 curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*"$ARCHIVENAME | cut -d : -f 2,3 | tr -d \" | wget -qi -
 tar -xzf $ARCHIVENAME
