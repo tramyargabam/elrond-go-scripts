@@ -93,14 +93,16 @@ echo -e "${CYAN}ENTER${GREEN} - Will exit to the command line without starting y
 echo -e
 echo -e
 
+location=$(mdfind kind:folder "elrond-go-scripts")
+
 read -p "How do you want to start your node (front|screen) : " START
 
 case $START in
    front)
-        cd $HOME/elrond-go-scripts/macos/start_scripts/ && ./start.sh
+        cd $location/macos/start_scripts/ && ./start.sh
         ;;
     screen)
-        cd $HOME/elrond-go-scripts/macos/start_scripts/ && ./start_screen.sh
+        cd $location/macos/start_scripts/ && ./start_screen.sh
         ;;
     *)
         echo "Ok ! Have it your way then..."
