@@ -38,6 +38,10 @@ echo -e
 
 #Clone the elrong-go & elrong-config repos
 curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*mac\|browser_download_url.*dylib" | cut -d : -f 2,3 | tr -d \" | wget -qi -
+mv node.mac node
+mv keygenerator.mac keygenerator
+chmod 777 node
+chmod 777 keygenerator
 cd ..
 git clone https://github.com/ElrondNetwork/elrond-config
 cd elrond-config && git checkout --force $CONFIGVER
