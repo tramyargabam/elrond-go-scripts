@@ -21,6 +21,8 @@ echo -e
 echo -e "${GREEN}--> Making sure you have all needed prerequisites...${NC}"
 echo -e
 
+location=$(pwd)
+
 bash _prerequisite.sh
 
 #Let's handle the paths

@@ -9,6 +9,8 @@ CYAN='\x1B[0;36m'
 GREEN='\x1B[0;32m'
 NC='\x1B[0m'
 
+location=$(pwd)
+
 #Handle some paths
 export GOPATH=$HOME/go
 
@@ -17,7 +19,7 @@ if (screen -ls | grep testnet -c); then screen -X -S testnet quit; else tmux kil
 
 #Refetch elrond-go assets
 cd $GOPATH/src/github.com/ElrondNetwork/elrond-go
-rm *
+rm -f *
 ARCHIVENAME='linux-amd64.tar.gz'
 curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*"$ARCHIVENAME | cut -d : -f 2,3 | tr -d \" | wget -qi -
 tar -xzf $ARCHIVENAME
@@ -56,21 +58,19 @@ echo -e "${CYAN}ENTER${GREEN} - Will exit to the command line without starting y
 echo -e
 echo -e
 
-location=$(find $HOME -xdev 2>/dev/null -name "elrond-go-scripts")
-
 read -p "How do you want to start your node (front|screen|tmux) : " START
 
 case $START in
      front)
-        cd $location/ubuntu-amd64/start_scripts/ && ./start.sh
+        cd $location/start_scripts/ && ./start.sh
         ;;
         
      screen)
-        cd $location/ubuntu-amd64/start_scripts/ && ./start_screen.sh
+        cd $location/start_scripts/ && ./start_screen.sh
         ;;
      
      tmux)
-        cd $location/ubuntu-amd64/start_scripts/ && ./start_tmux.sh
+        cd $location/start_scripts/ && ./start_tmux.sh
         ;;
      
      *)

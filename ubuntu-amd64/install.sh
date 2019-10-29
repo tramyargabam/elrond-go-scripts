@@ -13,6 +13,8 @@ echo -e
 echo -e "${GREEN}--> Installing Elrond-Go Node...${NC}"
 echo -e
 
+location=$(pwd)
+
 #Prerequisites & go installer
 echo -e
 echo -e "${GREEN}--> Running machine update...${NC}"
@@ -20,7 +22,6 @@ echo -e
 bash _prerequisite.sh
 
 export GOPATH=$HOME/go
-cd $GOPATH
 
 #If repos are present and you run install again this will clean up for you :D
 if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then echo -e "${RED}--> Repos present. Please run update.sh script...${NC}"; echo -e; exit; fi
@@ -33,7 +34,7 @@ echo -e "${GREEN}--> Get ${CYAN}elrond-go${GREEN} assets & clone ${CYAN}elrond-c
 echo -e
 
 #Get the elrong-go assets & clone elrong-config repo
-rm *
+rm -f *
 ARCHIVENAME='linux-amd64.tar.gz'
 curl -s https://api.github.com/repos/ElrondNetwork/elrond-go/releases/tags/$BINARYVER | grep "browser_download_url.*"$ARCHIVENAME | cut -d : -f 2,3 | tr -d \" | wget -qi -
 tar -xzf $ARCHIVENAME
@@ -87,21 +88,19 @@ echo -e "${CYAN}ENTER${GREEN} - Will exit to the command line without starting y
 echo -e
 echo -e
 
-location=$(find $HOME -xdev 2>/dev/null -name "elrond-go-scripts")
-
 read -p "How do you want to start your node (front|screen|tmux) : " START
 
 case $START in
      front)
-        cd $location/ubuntu-amd64/start_scripts/ && ./start.sh
+        cd $location/start_scripts/ && ./start.sh
         ;;
         
      screen)
-        cd $location/ubuntu-amd64/start_scripts/ && ./start_screen.sh
+        cd $location/start_scripts/ && ./start_screen.sh
         ;;
      
      tmux)
-        cd $location/ubuntu-amd64/start_scripts/ && ./start_tmux.sh
+        cd $location/start_scripts/ && ./start_tmux.sh
         ;;
      
      *)
