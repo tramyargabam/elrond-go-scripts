@@ -10,5 +10,5 @@ else
     brew update
 fi
 
-brew install git
+brew install git wget
  
