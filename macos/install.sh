@@ -73,8 +73,7 @@ sed -i -e 's/NodeDisplayName = ""/NodeDisplayName = "'$NODE_NAME'"/' $GOPATH/src
 echo -e
 echo -e "${GREEN}--> Building the Key Generator & creating unique node pems...${NC}"
 echo -e
-cd $GOPATH/src/github.com/ElrondNetwork/elrond-go/cmd/keygenerator
-go build
+cd $GOPATH/src/github.com/ElrondNetwork/elrond-go
 ./keygenerator
 
 #Copy the credentials for the node
