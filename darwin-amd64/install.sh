@@ -9,7 +9,7 @@ CYAN='\x1B[0;36m'
 GREEN='\x1B[0;32m'
 NC='\x1B[0m'
 
-BINARYVER='sf2019-1'
+BINARYVER='sf2019-2'
 CONFIGVER='sf2019'
 
 echo -e

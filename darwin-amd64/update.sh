@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BINARYVER='sf2019-1'
+BINARYVER='sf2019-2'
 CONFIGVER='sf2019'
 
 #Color to the people
