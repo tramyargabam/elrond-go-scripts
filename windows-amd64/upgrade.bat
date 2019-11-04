@@ -25,8 +25,8 @@ if exist "%GOPATH%\src\github.com\ElrondNetwork\elrond-go" @RD /S /Q "%GOPATH%\s
 if exist "%GOPATH%\src\github.com\ElrondNetwork\elrond-config" @RD /S /Q "%GOPATH%\src\github.com\ElrondNetwork\elrond-config"
 
 cd %userprofile%
-SET BINTAG=v1.0.37
-SET CONFTAG=BoN-ph1-w4-p1
+SET BINTAG=v1.0.38
+SET CONFTAG=BoN-ph1-w5
 cd %GOPATH%\src\github.com\ElrondNetwork
 
 :: Clone elrond-go & elrond-config repos

@@ -2,8 +2,8 @@
 @echo off
 cd %userprofile%
 
-SET BINTAG=v1.0.37
-SET CONFTAG= BoN-ph1-w4-p1
+SET BINTAG=v1.0.38
+SET CONFTAG= BoN-ph1-w5
 
 :: Create Paths
 if not exist "%GOPATH%\src\github.com\ElrondNetwork" mkdir %GOPATH%\src\github.com\ElrondNetwork
