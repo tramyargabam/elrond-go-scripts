@@ -43,6 +43,14 @@ mkdir %userprofile%\node-pem-backup
 copy /Y initialBalancesSk.pem %userprofile%\node-pem-backup
 copy /Y initialNodesSk.pem %userprofile%\node-pem-backup
 
+:: Naming node
+set /P nodename=What is your desired name for your Node?
+(
+echo [Preferences]
+echo     # NodeDisplayName represents the friendly name a user can pick for his node in the status monitor
+echo       NodeDisplayName = "%nodename%"
+)>"%GOPATH%\src\github.com\ElrondNetwork\elrond-go\cmd\node\config\prefs.toml"
+
 :: Show Node Version
 cd %GOPATH%\src\github.com\ElrondNetwork\elrond-go\cmd\node
 echo Current Node Version:
